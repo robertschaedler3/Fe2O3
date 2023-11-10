@@ -2,7 +2,7 @@
 
 Learn Rust and become fully *oxidized*!
 
-This is the starting point for the Learn Innovate Tinker (LIT) project to learn Rust and create your very own compression algorithm for _oxidizing_ files. This repository contains a collection of Rust code samples and exercises to help you learn the language and get started.
+This is the starting point for the Learn Innovate Tinker (LIT) project to learn Rust and create your very own cipher decoder. This repository contains a collection of Rust code samples and exercises to help you learn the language and get started.
 
 1. [Getting started](#getting-started)
 1. [Learn](#learn)
@@ -33,47 +33,55 @@ cargo --version
 rustc --version
 ```
 
-## Learn
+## 📖 Learn
 
 Each exercise is a Rust project in the [learn](./learn) folder. Each project contains a `README.md` file with information, instructions, and additional resources.
 
+0. [What is Rust?](./learn/0-what-is-rust/README.md)
 1. [Hello World!](./learn/1-hello-world/README.md)
-1. [Ownership & Borrowing](./learn/2-ownership-and-borrowing/README.md)
+1. [Ownership & Borrowing](./learn/2-ownership/README.md)
 1. [The Type System](./learn/3-type-system/README.md)
 1. [Traits](./learn/4-traits/README.md)
-1. [Control Flow & Error Handling](./learn/5-control-flow-and-error-handling/README.md)
+1. [Error Handling](./learn/5-error-handling/README.md)
 
-**Advanced**
+<!--
+
+**Advanced (optional)**
 
 6. [Concurrency](./learn/6-concurrency/README.md)
 1. [Unsafe Rust & FFI](./learn/7-unsafe-rust/README.md)
 1. [Macros](./learn/8-macros/README.md)
 1. [Testing](./learn/9-testing/README.md)
 
-## Innovate
+-->
 
-Now that you know the basics, it's time to innovate! The [innovate](./innovate) folder contains a Rust project with a skeleton for your compression algorithm. The project is setup with the following crates:
+## 💡 Innovate
+
+Now that you know the basics, it's time to innovate! The [innovate](./innovate) folder contains a series of lessons to help you build the skeleton for your decoder. The project is setup with the following crates:
 
 - [clap](https://crates.io/crates/clap) for command line argument parsing
 - [thiserror](https://crates.io/crates/thiserror) for error handling
 - [serde](https://crates.io/crates/serde) for serialization and deserialization
 - [miette](https://crates.io/crates/miette) for pretty error reporting
 
-<!-- TODO: how to make this a step-by-step set of instructions ? -->
+<!-- TODO: how to make this a step-by-step set of instructions so that people can bulid up the skeleton code themselves ? -->
 
-Feel free to add any other crates you need to customize your project!
+Feel free to add any other [crates](https://crates.io/) you need to customize your project!
 
-## Tinker
+## 🔧 Tinker
 
-Run wild and implement your compression algorithm!
+Run wild and implement your decoders!
 
-For convenience, a small program is provided for you to quickly test the compression ratio of your tool:
+For convenience, a complete skeleton is provided for you directly implement your algorithms.
+
+<!-- To run the decoder, use the following command:
 
 ```bash
-cargo run --bin compression-ratio -- <path-to-file> <path-to-compressed-file>
-```
+cargo run --bin decode -- <input-file> <output-file>
+``` -->
 
 ## Resources
 
 - [The Rust Programming Language](https://doc.rust-lang.org/book/)
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/)
+- [Rust Talks - _NoBoilerplate on Youtube_](https://youtube.com/playlist?list=PLZaoyhMXgBzoM9bfb5pyUOT3zjnaDdSEP&si=E5Ps7IYXtTLxKLP1)
