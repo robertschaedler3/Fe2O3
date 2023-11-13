@@ -9,11 +9,11 @@ use crate::{
     tinker::crack,
 };
 
-fn parse_key(s: &str) -> Result<String, String> {
+fn parse_key(s: &str) -> Result<Option<String>, String> {
     if s.len() != 5 {
         Err("key must be 32 characters".to_string())
     } else {
-        Ok(s.to_string())
+        Ok(Some(s.to_string()))
     }
 }
 
@@ -34,7 +34,6 @@ struct Args {
         short,
         long,
         conflicts_with = "encrypt",
-        required_unless_present = "encrypt"
     )]
     decrypt: bool,
 
@@ -43,7 +42,6 @@ struct Args {
         short,
         long,
         conflicts_with = "decrypt",
-        required_unless_present = "decrypt"
     )]
     encrypt: bool,
 
@@ -52,11 +50,11 @@ struct Args {
     file: String,
 
     /// Output file
-    #[arg(short, long, required = true)]
-    outfile: String,
+    #[arg(short, long, default_value=None)]
+    outfile: Option<String>,
 
-    #[arg(short, long, required = true, value_parser = parse_key)]
-    key: String,
+    #[arg(short, long, required = false, default_value = None, value_parser = parse_key)]
+    key: Option<String>,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -66,12 +64,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     if cli.decrypt {
         let encrypted_file = cli.file;
         println!("Decrypting...");
-        let out = decrypt(encrypted_file, cli.key)?;
-        std::fs::write(cli.outfile, out)?;
+        let out = decrypt(encrypted_file, cli.key.unwrap())?;
+        let outfile = cli.outfile.unwrap_or("out.txt".to_string());
+        std::fs::write(outfile, out)?;
     } else if cli.encrypt {
         println!("Encrypting...");
-        let out = encrypt(cli.file, cli.key)?;
-        std::fs::write(cli.outfile, out)?;
+        let out = encrypt(cli.file, cli.key.unwrap())?;
+        let outfile = cli.outfile.unwrap_or("out.txt".to_string());
+        std::fs::write(outfile, out)?;
     } else {
         println!("Calling cracking fn...");
         let outkey = crack(cli.file)?;
