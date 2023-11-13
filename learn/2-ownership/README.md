@@ -179,7 +179,15 @@ Ownership is primarily a discipline of heap management:
 - Rust deallocates heap data once its owner goes out of scope.
 - Ownership can be transferred by moves, which happen on assignments and function calls.
 - Heap data can only be accessed through its current owner, not a previous owner.
-We have emphasized not just how Rust's safeguards work, but why they avoid undefined behavior. When you get an error message from the Rust compiler, it's easy to get frustrated if you don't understand why Rust is complaining. These conceptual foundations should help you with interpreting Rust's error messages. They should also help you design more Rustic APIs.
+We have emphasized not just how Rust's safeguards work, but why they avoid
+undefined behavior. When you get an error message from the Rust compiler,
+it's easy to get frustrated if you don't understand why Rust is
+complaining. These conceptual foundations should help you with interpreting
+Rust's error messages. They should also help you design more Rustic APIs.
+
+## Exercises
+Try out the exercises at [Rust by
+practice](https://practice.rs/ownership/ownership.html) on ownership.
 
 ---
 ## References
