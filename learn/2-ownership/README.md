@@ -12,7 +12,7 @@ Rust's ownership model is a unique feature that enables memory safety without a 
 
 If any of these rules are violated, the program won't compile. None of the features of ownership will slow down your program while it's running. This also makes it easier to write code that has no execution paths that crash at runtime, more on that [later](<!-- TODO: reference Result/Option unwrap() in types -->).
 
->  Many programming languages don't require you to think about the stack and the heap very often. But in a systems programming language like Rust, whether a value is on the stack or the heap affects how the language behaves and why you have to make certain decisions.
+> Many programming languages don't require you to think about the stack and the heap very often. But in a systems programming language like Rust, whether a value is on the stack or the heap affects how the language behaves and why you have to make certain decisions.
 >
 > Later we'll discuss these concepts in more detail to understand how they will influence design descisions. For more details, check out the [official Rust documentation](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap).
 
@@ -98,7 +98,7 @@ error[E0382]: borrow of moved value: `i_robot`
 
 ### Mutable borrowing
 
-Now imagine you are an author in the process of writing a book. You give your editor a mutable borrow to our draft. At this point, only they can change it. They must give it back when they are done so that it can be borrowed again.
+Now imagine you are an author in the process of writing a book. You give your editor a mutable borrow to your draft. At this point, only they can change it. They must give it back when they are done so that it can be borrowed again.
 
 We can't let it be mutably borrowed again, we have to wait for the first function, our editor, to return it.
 
@@ -154,7 +154,7 @@ Often Rust can infer lifetimes for us, but sometimes we need to specify them. Li
 // TODO
 ```
 
-> Another way to think about lifetimes is by looking at how the borrow checker works. Rather than treating lifetimes as a variables scope, the borrow checker represents lifetimes as a range of memory.
+> Another way to think about lifetimes is by looking at how the borrow checker works. Rather than treating lifetimes as a variables scope, the borrow checker treats lifetimes as a ranges of memory.
 >
 > See [But What is 'a Lifetime](https://www.youtube.com/watch?v=gRAVZv7V91Q&t=65s&ab_channel=leddoo) a more in-depth explaination of how lifetimes relate to memory.
 
@@ -162,4 +162,10 @@ Often Rust can infer lifetimes for us, but sometimes we need to specify them. Li
 
 ### Resources
 
-Try out the exercises at [Rust by Practice](https://practice.course.rs/why-exercise.html) on [ownership](https://practice.course.rs/ownership/ownership.html) and [borrowing](https://practice.course.rs/ownership/borrowing.html).
+For a more in depth look at ownership, borrowing, and lifetimes, check out one of the following resources:
+
+- [Memory](./memory.md)
+- [Smart Pointers](./smart-pointers.md)
+- [Unsafe](./unsafe.md)
+
+Or try out the exercises at [Rust by Practice](https://practice.course.rs/why-exercise.html) on [ownership](https://practice.course.rs/ownership/ownership.html) and [borrowing](https://practice.course.rs/ownership/borrowing.html).
