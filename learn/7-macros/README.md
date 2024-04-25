@@ -151,11 +151,17 @@ Attribute macros are defined by a public function with the `proc_macro_attribute
 
 ## Debugging Macros
 
-In addition to being more difficult to read and understand, macros can also be more difficult to debug. When you're writing a function, you can use `println!` or a debugger to see what's happening with your variables. Although errors can be handled nicely and the compiler can provide helpful error messages it can be difficult to understand what's going wrong with a macro while you're writing it.
+In addition to being more difficult to read and understand, macros can also be more difficult to debug. When you're writing a function, you can use `println!` or a debugger to see what's happening at runtime. Although errors can be handled nicely and the compiler can provide helpful error messages it can be difficult to understand what's going wrong with a macro while you're writing it.
 
-Macros don't have this capability because they're expanded before the code is compiled. This often means that a faulty macro will result in a compilation error that can be difficult to understand, since the error will be in the expanded code, not the code that is written by the programmer.
+Sometimes it is what the macro *expands* to that is the problem, making it difficult to understand what's going wrong. Fortunately, the Rust compiler provides a way to see what a macro expands to. By using the `-Zunpretty=expanded` flag with `rustc`, you can see the expanded code that the macro generates.
 
-<!-- https://doc.rust-lang.org/book/ch19-06-macros.html -->
+> There is a helpful command-line tool called [cargo-expand](https://github.com/dtolnay/cargo-expand) that can be used to see the expanded code of a macro.
+>
+> Alternatively, the [playground](https://play.rust-lang.org/) provides some `tools` for viewing the expanded macro code.
+
+What if your macro is not expanding as you expect or is not expanding at all?
+
+<!-- TODO -->
 
 ---
 
