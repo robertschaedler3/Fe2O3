@@ -12,9 +12,24 @@ Metaprogramming is useful for reducing the amount of code you have to write and 
 
 A function signature must declare the number and type of parameters the function has. Macros, on the other hand, can take a variable number of parameters: we can call `println!("hello")` with one argument or `println!("hello {}", name)` with two arguments. Additionally, macros are expanded before the compiler interprets the meaning of the code, so a macro can modify code before it is compiled. For example, implementing a trait on a given type.
 
-The downside to implementing a macro instead of a function is that macro definitions are more complex than function definitions because you're writing Rust code that writes Rust code. Due to this indirection, macro definitions are generally more difficult to read, understand, and maintain than function definitions.
+The downside to implementing a macro instead of a function is that macro definitions are more complex than function definitions because you're writing Rust code that writes Rust code. Due to this indirection, macro definitions are generally more difficult to read, understand, and maintain than function definitions. *It is important to consider whether the additional power provided by macros is worth the added complexity.*
 
 <!-- https://doc.rust-lang.org/book/ch19-06-macros.html -->
+
+## Why Macros?
+
+Metaprogramming sounds great, but when is it useful?
+
+Rust macros span across a wide range of use cases, but most use cases are trying to optimize the time it takes to do something. Whether it's spending less time writing complex/repetative code, or optimizing the performance of a program, macros are meant to abstract away the complexity of a task.
+
+The following are some common use cases for macros:
+
+- Implement a complex `trait` for a type
+- Reduce duplication and boilerplate code
+- A user friendly way to implement an `unsafe` function
+- Reduce the amount of code needed to write tests
+
+As mentioned earlier, macros come at a cost. They can be difficult to write, read, understand, and debug. It's important to weigh the pros and cons of using a macro before implementing one.
 
 ## Declarative Macros
 
