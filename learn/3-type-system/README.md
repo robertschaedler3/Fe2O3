@@ -115,9 +115,9 @@ let total = view_count.get("total").ok_or("total is missing")?;
 let n = total.parse::<i32>()?;
 ```
 
-Later we will examine how to properly handle errors in more detail. For now, notice how the `?` operator is used at the end of an expression returning a `Result`. It is equivalent to a `match` expression, where the `Err(err)` branch expands to an early return `Err(From::from(err))`, and the `Ok(ok)` branch expands to an `ok` expression.
+This code covers all the possible error cases and is much concise than the previous examples.
 
-This code covers all the possible error cases and is much more concise than the previous examples.
+Later we will examine how to properly handle errors in more detail. For now, notice how the `?` operator is used at the end of an expression returning a `Result`. It is equivalent to a `match` expression, where the `Err(err)` branch expands to an early return `Err(From::from(err))`, and the `Ok(ok)` branch expands to an `ok` expression.
 
 ---
 
