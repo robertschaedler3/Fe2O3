@@ -11,7 +11,10 @@ struct Point {
 }
 ```
 
-In other languages, enums are typically an enumeration of integers, each with an assigned name. In Rust are proper *sum* types (some times referred to as *tagged unions*). They can be used to define a type that can be one of several variants:
+In other languages, enums are typically an enumeration of integers, each
+with an assigned name. In Rust, enums are proper *sum* types (some times
+referred to as *tagged unions*). They can be used to define a type that can
+be one of several variants:
 
 ```rust
 enum Shape {
