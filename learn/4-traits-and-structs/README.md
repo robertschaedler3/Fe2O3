@@ -108,8 +108,8 @@ impl VeryVerboseEnumOfThingsToDoWithNumbers {
 # Traits
 While it may be helpful to think of Rust's traits as similar to interfaces,
 there are subtle differences to make note of. Initially in this guide we
-will use the same equivalence, but point out the subtleties in the advanced
-trait guide.
+will use the same equivalence, but point out the subtleties in the [advanced
+trait guide](#advanced).
 
 A `trait` is simply a collection of methods defined for an unknown type:
 `Self`. They can access other methods declared in the same trait. A trait
