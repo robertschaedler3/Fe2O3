@@ -22,6 +22,8 @@ By requiring these five unsafe operations to be inside unsafe blocks, memory err
 
 ## Interacting with unsafe code
 
+One of the most fundamental reasons to use `unsafe` is to deal with Rust's raw pointer types `*const T` and `*mut T`. These are analogous to `&T` and `&mut T` references, except that they do not have lifetimes and are not subject to the same validity rules as references.
+
 <!-- TODO -->
 
 ### Abstracting unsafe code

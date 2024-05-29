@@ -80,11 +80,15 @@ let v: Vec<i32> = {
 
 But how does it work?
 
-<!-- TODO: explain matching -->
+You can think of a macro matcher as a token tree that the compiler tries to match against the input. Matchers can get quite complex, but they have huge expressive power much like regular expressions. Macro rules support a wide variety of _fragment types_. These fragments are used to match different parts of the input token stream. For the full list of fragment types, see the [official documentation](https://doc.rust-lang.org/reference/macros-by-example.html). With these mechanisms, you can match against most straightforward code patterns. If you need to match more complex patterns, you may want to consider using a procedural macro instead.
 
-> For more information on the `macro_rules!` syntax, see the [official documentation](https://doc.rust-lang.org/reference/macros-by-example.html) that contains a detailed explanation of the syntax and all the features available in declarative macros.
+> For more information on the `macro_rules!` syntax, see the [official documentation](https://doc.rust-lang.org/reference/macros-by-example.html) that contains a detailed explanation of the syntax and all the features available in declarative macros, plus some helpful examples.
 
 <!-- TODO: macro_export -->
+
+### When to use Declarative Macros
+
+Declarative macros are best suited for simple, repetitive tasks. They are best suited for fairly _mechanical_ replacements - if you are aiming to do fancy code transformations, procedural macros are likely a better fit.
 
 ## Procedural Macros
 
@@ -104,6 +108,10 @@ As functions, they must either return syntax, panic, or loop endlessly. Returned
 > [lib]
 > proc-macro = true
 > ```
+
+### When to use Procedural Macros
+
+Procedural macros are best suited for more complex transformations. They are best suited for tasks that require more complex logic, such as generating code based on a set of rules or transforming code in a way that is not possible with declarative macros.
 
 ### Procedural Macro Hygiene
 
