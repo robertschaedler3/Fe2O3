@@ -49,8 +49,6 @@ This is where references and borrowing come in.
 
 A *reference* is like a pointer in that it's an address we can follow to access the data stored at that address; that data is owned by some other variable. Unlike a pointer, a reference is guaranteed to point to a valid value of a particular type for the life of that reference.
 
-<!-- TODO: how deep should we go with this to show memory layout -->
-
 ### Shared References
 
 A shared reference `&T` is a porinter that may be shared. Any number of other references may point to the same data and each shared reference is `Copy`, meaning that the reference itself can be copied without affecting the data it points to.
@@ -160,19 +158,21 @@ error[E0382]: borrow of moved value: `i_robot`
 
 ### Slices
 
-*Slices* let you reference a contiguous sequence of elements in a collection rather than the whole collection. A slice is a kind of reference, so it does not have ownership.
+*Slices* let you reference a contiguous sequence of elements in a collection rather than the whole collection. A slice is a kind of reference, so it does not have ownership of the data it refers to. Slices are useful when you want to pass a part of a collection to a function, or when you want to work with a part of a collection.
 
-<!-- TODO: example/expand on this -->
+```rust
+let x = [1, 2, 3, 4, 5];
+
+let slice = &x[1..3]; // slice of `x` from index 1 to 3 (exclusive)
+```
+
+For more examples and information on slices, see the [official Rust documentation](https://doc.rust-lang.org/std/primitive.slice.html).
 
 ## Lifetimes
 
-Often Rust can infer lifetimes for us, but sometimes we need to specify them. Lifetimes are a way to ensure that references are valid for a certain scope. For example, the following function will not compile:
+A lifetime is a construct the compiler (or more specifically, its borrow checker) uses to ensure all borrows are valid. Specifically, a variable's lifetime begins when it is created and ends when it is destroyed. While lifetimes and scopes are often referred to together, they are not the same. Often Rust can infer lifetimes for us, but sometimes we need to specify them. For more information on lifetimes, see the [official Rust documentation](https://doc.rust-lang.org/rust-by-example/scope/lifetime.html).
 
-```rust
-// TODO
-```
-
-> Another way to think about lifetimes is by looking at how the borrow checker works. Rather than treating lifetimes as a variables scope, the borrow checker treats lifetimes as a ranges of memory.
+> Another way to think about lifetimes is by looking at how the borrow checker works. Rather than treating lifetimes as a variable's scope, the borrow checker treats lifetimes as a ranges of memory.
 >
 > See [But What is 'a Lifetime](https://www.youtube.com/watch?v=gRAVZv7V91Q&t=65s&ab_channel=leddoo) a more in-depth explaination of how lifetimes relate to memory.
 
