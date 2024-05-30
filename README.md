@@ -40,20 +40,13 @@ Each exercise is a Rust project in the [learn](./learn) folder. Each project con
 0. [What is Rust?](./learn/0-what-is-rust/README.md)
 1. [Hello World!](./learn/1-hello-world/README.md)
 1. [Ownership & Borrowing](./learn/2-ownership/README.md)
+    - [Memory Layout](./learn/2-ownership/memory.md)
+    - [Unsafe](./learn/2-ownership/unsafe.md)
+    - [Smart Pointers](./learn/2-ownership/smart-pointers.md)
 1. [The Type System](./learn/3-type-system/README.md)
-1. [Traits](./learn/4-traits/README.md)
-1. [Error Handling](./learn/5-error-handling/README.md)
-
-<!--
-
-**Advanced (optional)**
-
-6. [Concurrency](./learn/6-concurrency/README.md)
-1. [Unsafe Rust & FFI](./learn/7-unsafe-rust/README.md)
-1. [Macros](./learn/8-macros/README.md)
-1. [Testing](./learn/9-testing/README.md)
-
--->
+    - [Error Handling](./learn/5-error-handling/README.md)
+    - [Traits](./learn/4-traits/README.md)
+1. [Macros](./learn/7-macros/README.md)
 
 ## 💡 Innovate
 
