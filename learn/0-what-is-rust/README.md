@@ -26,7 +26,50 @@ Rust comes with a package manager and build tool called Cargo. Cargo simplifies 
 
 Cargo is a powerful tool that streamlines the development process and ensures consistent project structure. It is an essential part of the Rust ecosystem and is used by developers to create, build, and share Rust projects.
 
-> Rust libraries are called *crates*. Cargo downloads and compiles crates from the [crates.io](https://crates.io/) registry by default. You can also specify dependencies from other sources, such as internal mirrors or private repositories.
+Rust libraries are called *crates*. Cargo supports crates in source form or compressed packages fetched from a *registry*. 
+
+> Cargo downloads and compiles crates from the [crates.io](https://crates.io/) registry by default. You can also specify dependencies from other sources, such as internal mirrors or private repositories.
+
+Rust crate source code are organized logically as *modules*. Modules are used to organize related functionality, as well as control visible scope of code symbols. 
+
+## Testing
+
+Cargo supports running *unit* and *integration* tests. Unit tests, which include documentation tests, are typically colocated with product code. Integration tests are located in `tests/` folder. Tests can be run using `cargo test` or other community tools (such as `nextest`).
+
+### Authoring tests
+
+Tests are generally wrapped within a module annotated with the `cfg(tests)` macro. A quick way to get started with Rust can be to author tests (even without any production code), as follows:
+
+```rust
+#[cfg(test)]
+mod tests {
+    use std::mem::size_of;
+
+    #[test]
+    fn u16_size() {
+        assert_eq!(size_of::<u16>(), 2);
+    }
+
+    #[test]
+    fn i32_size() {
+        assert_eq!(size_of::<i32>(), 4);
+    }
+
+    #[test]
+    fn bool_size() {
+        assert_eq!(size_of::<bool>(), 1);
+    }
+}
+```
+
+### `cargo test`
+
+Running tests using the standard Rust `cargo test` tooling is the most common way to test without downloading additional tooling. The parameters passed into `cargo test` typically include the same parameters as the `cargo build` command (used to build the production code). 
+
+### `cargo nextest`
+
+Nextest is an evolved version of `cargo test` test driver that lists and runs individual tests in parallel (`cargo test` runs tests in sequence and fails when exit code is non-zero). It also provides provides detailed test run information that is useful for large-scale CI systems. 
+
 
 ## Tooling
 
@@ -43,10 +86,6 @@ Rust has a rich ecosystem of tools that enhance the development experience. The 
 > The [Rust Playground](https://play.rust-lang.org/) is an online tool for experimenting with Rust code without installing anything locally.
 
 Other tools like [Rust Analyzer](https://rust-analyzer.github.io/) provide advanced IDE support for Rust development. All of these tools are configured and available in the official [Rust devcontianer](https://github.com/microsoft/vscode-dev-containers/blob/main/containers/rust/README.md).
-
-## Testing
-
-<!-- TODO -->
 
 ## Documentation
 
