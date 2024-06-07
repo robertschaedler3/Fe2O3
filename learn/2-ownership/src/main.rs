@@ -37,5 +37,4 @@ fn main() {
     ownership();
     borrow();
     mutable_borrow();
-
 }
