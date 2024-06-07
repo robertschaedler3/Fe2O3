@@ -1,6 +1,6 @@
 # Type System
 
-One of Rust's most powerful features is its rich type system. It doesnt just enforce type safety, but allows you to build complex data models with deep integration with your probmel domain.
+One of Rust's most powerful features is its rich type system. It doesnt just enforce type safety, but allows you to build complex data models with deep integration with your problem domain.
 
 Rust uses an algebraic data type system, which is a way of defining types by combining other types. Most languages have *product* types (a container for a number of attributes):
 
@@ -29,7 +29,7 @@ enum Shape {
 
 To understand the power of Rust's type system, lets look at some examples in other languages and how Rust's type system helps you to avoid common mistakes.
 
-Let's examine the folowing line of code. What potential problems are there? Where could this code go wrong? If something goes wrong at runtime how would you know?
+Let's examine the following line of code. What potential problems are there? Where could this code go wrong? If something goes wrong at runtime how would you know?
 
 ```python
 int(item["view_count"]["total"])
