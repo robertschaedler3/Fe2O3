@@ -75,6 +75,10 @@ fn main() {
 
 The `extern` block is a list of function signatures in a foreign library, in this case with the platform's C ABI. The `#[link(...)]` attribute is used to instruct the linker to link against the `hello` library so the symbols can be resolved.
 
+Ultimately, FFI is about accessing bytes that originiate somehwere outside of your application's Rust code.
+
+Since `extern` exists outside of Rust's control, it is inherently unsafe. For example, if a C function is called from Rust, the Rust compiler cannot guarantee that the C function will not violate Rust's memory safety guarantees.
+
 There are many tools and libraries that can help with FFI in Rust for generating bindings between languages, interracting with foreign types, and much more:
 
 - [bindgen](https://github.com/rust-lang/rust-bindgen) - Automatically generates Rust FFI bindings to C (and some C++) libraries
@@ -84,17 +88,11 @@ There are many tools and libraries that can help with FFI in Rust for generating
 
 > Using the C ABI, it is (generally) possible to use Rust with any language that can link to C libraries.
 
+> For a complete example that includes compiling a Rust app, generating bindings, and linking it with a C library, see [A little C with your Rust](https://github.com/robertschaedler3/a-little-rust-with-your-c)
+
 #### Creating a safe interface
 
 <!-- TODO -->
-
-### Using `extern` functions to call external code
-
-Ultimately, FFI is about accessing bytes that originiate somehwere outside of your application's Rust code.
-
-Since `extern` exists outside of Rust's control, it is inherently unsafe. If a C function is called from Rust, the Rust compiler cannot guarantee that the C function will not violate Rust's memory safety guarantees.
-
-<!-- TODO: A little C with your Rust -->
 
 ### Using Rust from other languages
 
@@ -120,4 +118,4 @@ int main() {
 
 > A more robust way to create the bindings, is to generate them automatically using a tool like `cbindgen` as a part of the build process. This way, the bindings are always up-to-date and you don't have to worry about maintaining both the Rust implementation and the C bindings.
 
-> For a complete example for compiling a Rust library, generating bindings, and linking it with a C program, see [A little Rust with your C](https://github.com/robertschaedler3/c-rust).
+> For a complete example that includes compiling a Rust library, generating bindings, and linking it with a C program, see [A little Rust with your C](https://github.com/robertschaedler3/a-little-c-with-your-rust).
