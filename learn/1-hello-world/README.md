@@ -82,8 +82,8 @@ In Rust, the following code would produce a *compile-time* error with detailed i
 
 ```rust
 fn main() {
-    let spam = vec!["cat", "dog", "mouse"];
-    println!("{}", spam[6]);
+    let animals = ["cat", "dog", "mouse"];
+    println!("{}", animals[42]);
 }
 ```
 
@@ -91,11 +91,11 @@ fn main() {
 $ cargo build
 
 error: this operation will panic at runtime
- --> no_segfaults.rs:2:15
+ --> main.rs:3:15
   |
-2 |     println!("{}", spam[6]);
-  |                    ^^^^^^^ index out of bounds:
-        the length is 3 but the index is 6
+3 |     println!("{}", animals[42]);
+  |                    ^^^^^^^^^^^ index out of bounds:
+        the length is 3 but the index is 42
 ```
 
 The Rust compiler provides:

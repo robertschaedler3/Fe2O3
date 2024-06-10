@@ -1,2 +1,6 @@
 [workspace]
-members = ["tinker", "learn/1-hello-world", "learn/2-ownership", "learn/3-type-system", "learn/4-traits-and-structs"]
+resolver = "2"
+members = [
+    "tinker",
+    "learn/*"
+]

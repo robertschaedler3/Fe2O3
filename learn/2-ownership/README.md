@@ -36,6 +36,9 @@ The variable `s` refers to a string literal, where the value of the string is ha
 // this scope is over, s is no longer valid
 ```
 
+> ```bash
+> cargo run --features=nightly
+
 In other words, there are two important points:
 
 - When `s` comes into scope, it is valid.
@@ -53,7 +56,7 @@ A *reference* is like a pointer in that it's an address we can follow to access 
 
 A shared reference `&T` is a porinter that may be shared. Any number of other references may point to the same data and each shared reference is `Copy`, meaning that the reference itself can be copied without affecting the data it points to.
 
-Values behind shared references are not mutable, therefore you cannot modify or reassign the value a shared reference points to, not can you cast a shared reference to a mutable one. The Rust compiler assumes that the value a shared reference points to will not change while that reference lives. For example, if the compiler see that the value behind a shared reference is read multiple times in a function, it is well within its rights to read it only onces and reuse that value.
+Values behind shared references are not mutable, therefore you cannot modify or reassign the value a shared reference points to, nor can you cast a shared reference to a mutable one. The Rust compiler assumes that the value a shared reference points to will not change while that reference lives. For example, if the compiler see that the value behind a shared reference is read multiple times in a function, it is well within its rights to read it only onces and reuse that value.
 
 ### Mutable References
 
@@ -61,7 +64,7 @@ The alternative to a shared reference is a mutable reference `&mut T`. A mutable
 
 <!-- TODO: interesting optimizations that occur -->
 
-### Interrior Mutability
+### Interior Mutability
 
 Some types provide _interior mutability_, meaning that you can modify the value behind a shared reference. These types usually rely on additional mechanisms (like atomic CPU instructions) or invariants to provide safe mutability without relying on the semantics of exclusive references. These types broadly fall into two categories: those that let you get a mutable reference through a shared reference (like `Mutex` or `RefCell`) and those that let you replace a value given only a shared reference (like `Cell`).
 
