@@ -20,7 +20,7 @@ pub fn append_hello(value: String) -> Result<String, String> {
     if value.is_empty() {
         Err("invalid format. value is empty".into())
     } else {
-        Ok(format!("Hello {}", name))
+        Ok(format!("Hello {}", value))
     }
 }
 ```
