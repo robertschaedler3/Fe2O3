@@ -7,14 +7,6 @@ use crypto::{decrypt1_rs, decrypt2_rs, encrypt1_rs, encrypt2_rs};
 
 use crate::tinker::*;
 
-fn parse_key(s: &str) -> Result<Option<String>, String> {
-    if s.len() != 5 {
-        Err("key must be 32 characters".to_string())
-    } else {
-        Ok(Some(s.to_string()))
-    }
-}
-
 fn parse_file(file_name: &str) -> Result<String, String> {
     let file = std::fs::read_to_string(file_name);
     match file {
@@ -29,32 +21,36 @@ fn parse_file(file_name: &str) -> Result<String, String> {
 struct Args {
     /// Decrypt mode
     #[arg(
-        short,
         long,
         conflicts_with = "encrypt1",
+        conflicts_with = "encrypt2",
+        conflicts_with = "decrypt2",
     )]
     decrypt1: bool,
 
     /// Encrypt mode
     #[arg(
-        short,
         long,
         conflicts_with = "decrypt1",
+        conflicts_with = "encrypt2",
+        conflicts_with = "decrypt2",
     )]
     encrypt1: bool,
     /// Decrypt mode
     #[arg(
-        short,
         long,
         conflicts_with = "encrypt2",
+        conflicts_with = "encrypt1",
+        conflicts_with = "decrypt1",
     )]
     decrypt2: bool,
 
     /// Encrypt mode
     #[arg(
-        short,
         long,
         conflicts_with = "decrypt2",
+        conflicts_with = "encrypt1",
+        conflicts_with = "decrypt1",
     )]
     encrypt2: bool,
 
@@ -66,9 +62,9 @@ struct Args {
     #[arg(short, long, default_value=None)]
     outfile: Option<String>,
 
-    #[arg(short, long, required = false, default_value = None, value_parser = parse_key)]
+    #[arg(long, required = false, default_value = None)]
     key1: Option<i32>,
-    #[arg(short, long, required = false, default_value = None, value_parser = parse_key)]
+    #[arg(long, required = false, default_value = None)]
     key2: Option<String>,
 }
 
@@ -98,50 +94,48 @@ fn main() -> Result<(), Box<dyn Error>> {
         let out = encrypt2_rs(cli.file, cli.key2.unwrap());
         let outfile = cli.outfile.unwrap_or("out.txt".to_string());
         std::fs::write(outfile, out)?;
-    } else {
-        println!("Calling cracking fn...");
-        let outkey = crack(cli.file)?;
-        println!("Cracked key: {}", outkey)
     }
     Ok(())
 }
 
 #[cfg(test)]
 mod tests {
+    use std::fs;
+
     use super::*;
 
-    // TODO: Run crack functions and get the key
-    const key1: i32 = 10;
-    const key2: &str = "rust";
-    const key3: &str = "rustiscool";
-
     #[test]
-    fn test_encrypted__1() {
-        let file = "input1/encrypted1.txt";
-        let result = decrypt1_rs(file.to_string(), key1.into());
-        
+    fn test_encrypted_1() {
+        let file = "./src/encrypted1.txt";
+        let contents = fs::read_to_string(file).unwrap();
+        let key1 = crack1(contents.clone()).unwrap();
+        let result = decrypt1_rs(contents, key1);
         // Hash the result
         let result = sha256::digest(result.as_bytes());
-        assert_eq!(result, "16b1a5e0e6db690416b4cc00e878ede9a2a61ef3ed3a848a4dd933fe199539b4");
+        assert_eq!(result, "91bfb1666ea5046c6c105f666f3dd70720c0569125abaaa6e911b581f15cd5bd");
     }
 
     #[test]
-    fn test_encrypted__2() {
-        let file = "input1/encrypted2.txt";
-        let result = decrypt2_rs(file.to_string(), key2.into());
+    fn test_encrypted_2() {
+        let file = "./src/encrypted2.txt";
+        let contents = fs::read_to_string(file).unwrap();
+        let key1 = crack2(contents.clone()).unwrap();
+        let result = decrypt2_rs(contents, key1);
         
         // Hash the result
         let result = sha256::digest(result.as_bytes());
-        assert_eq!(result, "16b1a5e0e6db690416b4cc00e878ede9a2a61ef3ed3a848a4dd933fe199539b4");
+        assert_eq!(result, "3ce8c7e86f4d32a14fcbb8b5bb82c0c584ee409ff7536e8f968e6540c5077706");
     }
 
     #[test]
-    fn test_encrypted__3() {
-        let file = "input1/encrypted3.txt";
-        let result = decrypt2_rs(file.to_string(), key3.into());
+    fn test_encrypted_3() {
+        let file = "./src/encrypted3.txt";
+        let contents = fs::read_to_string(file).unwrap();
+        let key1 = crack2(contents.clone()).unwrap();
+        let result = decrypt2_rs(contents, key1);
         
         // Hash the result
         let result = sha256::digest(result.as_bytes());
-        assert_eq!(result, "16b1a5e0e6db690416b4cc00e878ede9a2a61ef3ed3a848a4dd933fe199539b4");
+        assert_eq!(result, "3ce8c7e86f4d32a14fcbb8b5bb82c0c584ee409ff7536e8f968e6540c5077706");
     }
 }
