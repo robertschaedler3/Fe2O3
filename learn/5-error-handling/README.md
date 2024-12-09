@@ -13,7 +13,7 @@ pub trait Error: Debug + Display {
 
 ## Return types in `Result`
 
-As you have seen before, `Ok` and `Err` are the two variants of `Result`. In this example, `append_hello` returns a `Result` of return type `String` and error type `String`. 
+As you have seen before, `Ok` and `Err` are the two variants of `Result`. In this example, `append_hello` returns a `Result` of return type `String` and error type `String`.
 
 ```rust
 pub fn append_hello(value: String) -> Result<String, String> {
@@ -54,7 +54,7 @@ impl PositiveNonzeroInteger {
 }
 ```
 
-## The `?` operator 
+## The `?` operator
 
 The `?` operator makes error handling ergonomic in Rust. It shorthands much of what a developer would do with a `match` statement on the callsite, such as the `value.parse::<i32>()` in the example below, where the matched cases are `Ok(something)` and `Err(something)`. The `map_err` is commonly used to convert expected errors at callsites to another well-known error (in the example below, `ParseIntError` is convert to a `String` type).
 
@@ -68,7 +68,7 @@ pub fn convert_to_num(value: &str) -> Result<i32, String> {
 }
 ```
 
-In methods where capturing precise errors returned from call sites isn't significant, such as the main method, it is possible to use a boxed trait to bubble up the error (in this case, it bubbles upto the console). 
+In methods where capturing precise errors returned from call sites isn't significant, such as the main method, it is possible to use a boxed trait to bubble up the error (in this case, it bubbles upto the console).
 
 ```rust
 fn main() -> Result<(), Box<dyn error::Error>> {
@@ -109,7 +109,7 @@ pub trait Debug {
 }
 ```
 
-`Box<dyn Error>` implements the `From::from()` method, which makes it ergonomic to convert `&str` or `String` into `Error`. This results in the ability to report strings as errors without defining "structured" errors as follows (line 3): 
+`Box<dyn Error>` implements the `From::from()` method, which makes it ergonomic to convert `&str` or `String` into `Error`. This results in the ability to report strings as errors without defining "structured" errors as follows (line 3):
 
 ```rust
 pub fn error() -> Result<(), String> {
@@ -122,7 +122,7 @@ pub fn error() -> Result<(), String> {
 
 #### Manual method
 
-The bare mimimum trait implementation for a custom error defined within a module requires a human-readable description of the error.  
+The bare mimimum trait implementation for a custom error defined within a module requires a human-readable description of the error.
 
 ```rust
 use std::fmt;
@@ -161,14 +161,14 @@ enum MyError {
 
 #### anyhow crate
 
-The `anyhow` crate provides the `anyhow::Error`, a trait object based error type for easy idiomatic error handling in Rust applications. It improves productivity when the module author has multiple calllsites that return different types of errors, requiring context propagation and minimal boilerplate error handling.  
+The `anyhow` crate provides the `anyhow::Error`, a trait object based error type for easy idiomatic error handling in Rust applications. It improves productivity when the module author has multiple calllsites that return different types of errors, requiring context propagation and minimal boilerplate error handling.
 
 ```rust
 use anyhow::{Context, Result};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-struct ClusterMap { 
+struct ClusterMap {
     x: u32,
     y: u32
 }
@@ -183,13 +183,13 @@ fn main() -> Result<()> {
     let path = "./path/to/instrs.json";
     let _content = std::fs::read(path)
         .with_context(|| format!("Failed to read instrs from {}", path))?;
-    
+
     Ok(())
 }
 
 ```
 
-Here is an example of `anyhow::Result` being used to chain different errors within a single function (fn any_error example below chains ) 
+Here is an example of `anyhow::Result` being used to chain different errors within a single function (fn any_error example below chains )
 
 ```rust
 fn string_error() -> Result<()> {
@@ -208,3 +208,10 @@ fn any_error() -> Result<()> {
 
 ```
 
+## Try it out!
+
+Experiment with Rust's error handling by uncommenting different code snippets in `main.rs` and running the code.
+
+```bash
+$ cargo run -p error-handling
+```
