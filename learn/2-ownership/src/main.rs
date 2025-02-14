@@ -25,7 +25,7 @@ fn borrow() {
     loan(&i_robot, "baz");
 }
 
-#[cfg(feature="mu_borrow")]
+#[cfg(feature="mut_borrow")]
 fn mutable_borrow() {
     let mut i_robot = Book{};
 

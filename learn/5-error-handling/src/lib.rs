@@ -60,7 +60,7 @@ impl NegativeNonzeroInteger {
 
 // anyhow method
 #[derive(Debug, Deserialize)]
-pub struct ClusterMap { 
+pub struct ClusterMap {
     x: u32,
     y: u32
 }
@@ -75,7 +75,7 @@ pub fn get_cluster_info_with_context() -> Result<()> {
     let path = "D:\\s\\Fe2O3\\learn\\5-error-handling\\src\\cluster1.json";
     let _content = std::fs::read(path)
         .with_context(|| format!("Failed to read instrs from {}", path))?;
-    
+
     Ok(())
 }
 

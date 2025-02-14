@@ -299,7 +299,7 @@ trait Programmer {
     fn fav_language(&self) -> String;
 }
 
-// CompSciStudent (computer science student) is a subtrait of both Programmer 
+// CompSciStudent (computer science student) is a subtrait of both Programmer
 // and Student. Implementing CompSciStudent requires you to impl both supertraits.
 trait CompSciStudent: Programmer + Student {
     fn git_username(&self) -> String;
@@ -315,6 +315,8 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
     )
 }
 ```
+
+---
 
 ### Resources
 
