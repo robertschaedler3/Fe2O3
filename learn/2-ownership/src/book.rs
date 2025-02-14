@@ -1,3 +1,5 @@
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
+
 pub struct Book{}
 
 pub fn loan(_book: &Book, borrower: &str) {
