@@ -4,3 +4,6 @@ members = [
     "tinker",
     "learn/*"
 ]
+exclude = [
+    "learn/1-hello-world"
+]
