@@ -179,6 +179,18 @@ A lifetime is a construct the compiler (or more specifically, its borrow checker
 >
 > See [But What is 'a Lifetime](https://www.youtube.com/watch?v=gRAVZv7V91Q&t=65s&ab_channel=leddoo) a more in-depth explaination of how lifetimes relate to memory.
 
+## Try it out!
+
+Experiment with ownership, borrowing, and lifetimes in Rust by running and modifying the code.
+
+_Compilation errors are expected, see if you can fix them by using the compiler's suggestions!_
+
+```bash
+$ cargo run -p ownership --bin scope
+$ cargo run -p ownership --bin borrow
+$ cargo run -p ownership --bin mut_borrow
+```
+
 ---
 
 ### Resources
