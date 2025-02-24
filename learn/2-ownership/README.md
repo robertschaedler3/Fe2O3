@@ -186,9 +186,9 @@ Experiment with ownership, borrowing, and lifetimes in Rust by running and modif
 _Compilation errors are expected, see if you can fix them by using the compiler's suggestions!_
 
 ```bash
-$ cargo run -p ownership
-$ cargo run -p ownership --features borrow
-$ cargo run -p ownership --features mut_borrow
+$ cargo run -p ownership --bin scope
+$ cargo run -p ownership --bin borrow
+$ cargo run -p ownership --bin mut_borrow
 ```
 
 ---
