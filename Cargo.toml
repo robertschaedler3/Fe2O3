@@ -2,8 +2,9 @@
 resolver = "2"
 members = [
     "tinker",
-    "learn/*"
+    "learn/*",
 ]
 exclude = [
-    "learn/1-hello-world"
+    "learn/1-hello-world",
+    "learn/rust-builtin-types",
 ]
