@@ -1,3 +1,84 @@
+# References and borrowing
+
+Rust references are created using the `&` operator and somewhat analogous to pointers in `C` and references in `C++`, but with some key differences.
+
+* Like Rust variables, references are *immutable* by default, unless explicitly qualified as mutable with the `&mut` keyword.
+* It is impossible to create a mutable reference to an immutable variable.
+* References are associated with a `scope`, and the general rule is that reference cannot outlive the scope of the associated variable. This a key concept called `lifetime` and it will be discussed at length in a forthcoming chapter.
+* There can only be a *single* active mutable reference to a mutable variable, and it must not overlap the scope of any other reference to the same variable.
+* It is legal to have *any* number of immutable references to a variable at any point of time (subject to the above rule)
+
+References can dereferenced using the `*` operator, but the compiler will implicitly perform the operation for immutable references. It is possible to create a reference to a reference (a type of `&&` in this case) ad infinitum, but there's seldom a need (if any) for such constructs in Rust. Unlike some other languages which require a matching number of `*` deferences to access the underlying variable, the compiler automatically inserts as many deferences as necessary.
+
+In the example below, we create a **mutable** variable and define a nested lexical scope that has several **immutable** references to it. The scope or `lifetime` of these **immutable** references ends at the end of the nested scope, after which it's legal to create a *mutable* reference. Note that the compiler automatically deferences immutable references.
+
+Notice how the `lifetime` of the variable `a` is always longer than all the references to the variable.
+
+```rust
+fn main() {
+    // Lifetime of a begins here
+    let mut a = 42;
+    {
+        let b = &a;
+        let c = &a;  // Both b and c are immutable references to a
+        let d = &b; // type of d (&&i32)
+        println!("{} {} {}", b, c, d); // The compiler automatically dereferences *c
+
+        // This won't compile because it's illegal to take a mutable reference when immutable references are still in scope
+        // let e = &mut a;
+        // d, c, b go out of scope in that order, ending their lifetimes
+    }
+    let e = &mut a; // Ok: b and c are not in scope
+    *e = 43;    // Assignment requires explicit deferencing
+    // Lifetime of e ends here
+    // Lifetime of a ends here
+}
+```
+References and lifetimes are closely associated with another Rust concept known as `ownership`, but we'll first take a look at `slices`.
+
+### Slices
+
+*Slices* let you reference a contiguous sequence of elements in a collection rather than the whole collection. A slice is a kind of reference, so it does not have ownership of the data it refers to. Slices are useful when you want to pass a part of a collection to a function, or when you want to work with a part of a collection.
+
+Rust `slices` leverage `references` to create subsets of arrays. Unlike arrays, which have a static fixed length determined at compile time, slices can be of arbitrary size. Internally, slices are implemented as a "fat-pointer" that contains the length of the slice and a reference to a starting element in the original array. Like everything else in Rust, `slices` are immutable by default, unless created with a `&mut` qualifier, and they are subject to the same restrictions as references.
+
+Rust offers several syntactical shortcuts with the to create array slices. It is possible to create additional slices from an existing slice. One important caveat is the statically specified slice bounds are **not checked by the compiler at compile time**. Exceeding the start or end bounds of the slice or the original array (or slice) will cause a runtime crash. The `len()` method can be used to determine the *runtime* length of a slice.
+
+In the example below, we create an **immutable** integer array with four elements and create **immutable** slices from it.
+
+```rust
+fn main() {
+    let a = [40, 41, 42, 43];
+    let b = &a[1..a.len()]; // A slice starting with the second element in the original
+    let c = &a[1..]; // Same as the above
+    let d = &a[..]; // Same as &a[0..] or &a[0..a.len()]
+    let e = &d[2..]; // Sub-slice
+    println!("b:{b:?} c:{c:?} d:{d:?} e:{e:?}");
+    // This will crash
+    //let f = &a[0..a.len()+1];
+}```
+
+```bash
+# Output
+[41, 42, 43] [41, 42, 43] [40, 41, 42, 43]
+```
+
+The following example the illustrates the flexibility accorded by passing in slices as function parameters instead of arrays. Unlike array parameters that are constrained to a specific length, slices can be of arbitrary length.
+
+```rust
+fn takes_u8_slice(a: &[u8]) {
+    for x in a {
+        println!("{x}");
+    }
+}
+
+fn main() {
+    takes_u8_slice(&[40, 41, 42]);
+}
+```
+
+For more examples and information on slices, see the [official Rust documentation](https://doc.rust-lang.org/std/primitive.slice.html).
+
 # Ownership
 
 Ownership is Rust's most unique feature and has deep implications for the rest of the language. It enables Rust to make memory safety guarantees without needing a garbage collector, so it's important to understand how ownership works.
@@ -16,61 +97,7 @@ If any of these rules are violated, the program won't compile. None of the featu
 >
 > Later we'll discuss these concepts in more detail to understand how they will influence design descisions. For more details, check out the [official Rust documentation](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap).
 
-As a first example of ownership, we'll look at the *scope* of variables. A scope is the range within a program for which an item is valid. Take the following variable:
-
-```rust
-let s = "hello";
-```
-
-The variable `s` refers to a string literal, where the value of the string is hardcoded into the text of our program. The variable is valid from the point at which it's declared until the end of the current scope. The following shows when `s` would be valid:
-
-```rust
-// s is not valid here, it's not yet declared
-
-{
-    let s = "hello";   // s is valid from this point forward
-
-    // do stuff with s ...
-}
-
-// this scope is over, s is no longer valid
-```
-
-> ```bash
-> cargo run --features=nightly
-
-In other words, there are two important points:
-
-- When `s` comes into scope, it is valid.
-- It remains valid until it goes out of scope.
-
-At this point, the relationship between scopes and when variables are valid is similar to that in other programming languages. But what about when you need to share data or pass a variable to a function?
-
-This is where references and borrowing come in.
-
-## References and Borrowing
-
-A *reference* is like a pointer in that it's an address we can follow to access the data stored at that address; that data is owned by some other variable. Unlike a pointer, a reference is guaranteed to point to a valid value of a particular type for the life of that reference.
-
-### Shared References
-
-A shared reference `&T` is a porinter that may be shared. Any number of other references may point to the same data and each shared reference is `Copy`, meaning that the reference itself can be copied without affecting the data it points to.
-
-Values behind shared references are not mutable, therefore you cannot modify or reassign the value a shared reference points to, nor can you cast a shared reference to a mutable one. The Rust compiler assumes that the value a shared reference points to will not change while that reference lives. For example, if the compiler see that the value behind a shared reference is read multiple times in a function, it is well within its rights to read it only onces and reuse that value.
-
-### Mutable References
-
-The alternative to a shared reference is a mutable reference `&mut T`. A mutable reference is a pointer that allows you to change the value it points to. You can have only one mutable reference to a particular piece of data in a particular scope. In other words, the Rust compiler assumes that mutable references are _exclusive_.
-
-<!-- TODO: interesting optimizations that occur -->
-
-### Interior Mutability
-
-Some types provide _interior mutability_, meaning that you can modify the value behind a shared reference. These types usually rely on additional mechanisms (like atomic CPU instructions) or invariants to provide safe mutability without relying on the semantics of exclusive references. These types broadly fall into two categories: those that let you get a mutable reference through a shared reference (like `Mutex` or `RefCell`) and those that let you replace a value given only a shared reference (like `Cell`).
-
-<!-- TODO: expand on these 2 types -->
-
-###  Immutable borrowing
+###  Immutable borrowing and ownership
 
 Imagine you are running a library with infinite copies of each book. When you loan out a book you are guaranteed a few things:
 
@@ -115,7 +142,7 @@ error[E0382]: borrow of moved value: `i_robot`
    |
 ```
 
-### Mutable borrowing
+### Mutable borrowing and ownership
 
 Now imagine you are an author in the process of writing a book. You give your editor a mutable borrow to your draft. At this point, only they can change it. They must give it back when they are done so that it can be borrowed again.
 
@@ -159,19 +186,7 @@ error[E0382]: borrow of moved value: `i_robot`
 
 > Later we'll examine how to apply the concepts of mutable and immutable borrowing to concurrent/asynchronous programs. <!-- TODO: link -->
 
-### Slices
-
-*Slices* let you reference a contiguous sequence of elements in a collection rather than the whole collection. A slice is a kind of reference, so it does not have ownership of the data it refers to. Slices are useful when you want to pass a part of a collection to a function, or when you want to work with a part of a collection.
-
-```rust
-let x = [1, 2, 3, 4, 5];
-
-let slice = &x[1..3]; // slice of `x` from index 1 to 3 (exclusive)
-```
-
-For more examples and information on slices, see the [official Rust documentation](https://doc.rust-lang.org/std/primitive.slice.html).
-
-## Lifetimes
+## Lifetimes and ownership
 
 A lifetime is a construct the compiler (or more specifically, its borrow checker) uses to ensure all borrows are valid. Specifically, a variable's lifetime begins when it is created and ends when it is destroyed. While lifetimes and scopes are often referred to together, they are not the same. Often Rust can infer lifetimes for us, but sometimes we need to specify them. For more information on lifetimes, see the [official Rust documentation](https://doc.rust-lang.org/rust-by-example/scope/lifetime.html).
 
@@ -202,3 +217,6 @@ For a more in depth look at ownership, borrowing, and lifetimes, check out one o
 - [Unsafe](./unsafe.md)
 
 Or try out the exercises at [Rust by Practice](https://practice.course.rs/why-exercise.html) on [ownership](https://practice.course.rs/ownership/ownership.html) and [borrowing](https://practice.course.rs/ownership/borrowing.html).
+
+#### Takeway
+Rust programs frequently use references, and the act of creating a reference is called as `borrowing`; as with references, borrows can be `immutable` (default) or `mutable`. Borrowing is associated with other important concepts like `lifetime` and `ownership`. The compiler implements a mechanism called `borrow checker` to ensure that the invariants around references are not violated.
